@@ -18,34 +18,29 @@ export class ItemsController {
   constructor(private readonly itemsService: ItemsService) {}
 
   @Get()
-  findAll(): Item[] {
-    return this.itemsService.findAll();
+  async findAll(): Promise<Item[]> {
+    return await this.itemsService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id) {
-    return this.itemsService.findOne(id);
+  async findOne(@Param('id') id): Promise<Item> {
+    return await this.itemsService.findOne(id);
   }
 
   @Post()
   @HttpCode(204)
   @Header('Cache-Control', 'none')
-  async create(@Body() createItemDto: CreateItemDto) {
-    return `Name:${createItemDto.name}
-    Quantity: ${createItemDto.quantity}
-    Description: ${createItemDto.desc}`;
+  async create(@Body() createItemDto: CreateItemDto): Promise<Item> {
+    return this.itemsService.create(createItemDto);
   }
 
   @Delete(':id')
-  delete(@Param('id') id): string {
-    return `Delete item No.${id}`;
+  delete(@Param('id') id): Promise<Item> {
+    return this.itemsService.delete(id);
   }
 
   @Put(':id')
-  update(@Body() updateItemDto: CreateItemDto, @Param('id') id): string {
-    return `Update item No.${id}:
-    Name:${updateItemDto.name}
-    Quantity: ${updateItemDto.quantity}
-    Description: ${updateItemDto.desc}`;
+  update(@Body() updateItemDto: CreateItemDto, @Param('id') id): Promise<Item> {
+    return this.itemsService.update(id, updateItemDto);
   }
 }
