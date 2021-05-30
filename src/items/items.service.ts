@@ -11,7 +11,7 @@ export class ItemsService {
     return await this.itemModel.find();
   }
 
-  async findOne(id: number): Promise<Item> {
+  async findOne(id: string): Promise<Item> {
     return await this.itemModel.findOne({ _id: id });
   }
 
@@ -20,11 +20,11 @@ export class ItemsService {
     return await newItem.save();
   }
 
-  async delete(id: number): Promise<Item> {
+  async delete(id: string): Promise<Item> {
     return await this.itemModel.findByIdAndRemove(id);
   }
 
-  async update(id: number, item: Item): Promise<Item> {
+  async update(id: string, item: Item): Promise<Item> {
     return await this.itemModel.findByIdAndUpdate(id, item, { new: true });
   }
 }
