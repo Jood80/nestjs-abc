@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { ChatGateway } from './chat.gateway';
 import { ItemsModule } from './items/items.module';
 
 @Module({
@@ -11,6 +12,7 @@ import { ItemsModule } from './items/items.module';
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,
+      envFilePath: '.development.env',
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
@@ -21,7 +23,7 @@ import { ItemsModule } from './items/items.module';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ChatGateway],
 })
 export class AppModule {}
 console.log(process.env.MONGO_URI);
