@@ -5,9 +5,13 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ChatGateway } from './chat.gateway';
 import { ItemsModule } from './items/items.module';
+import { PostsModule } from './posts/posts.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
+    PostsModule,
+    UsersModule,
     ItemsModule,
     ConfigModule.forRoot({
       isGlobal: true,
