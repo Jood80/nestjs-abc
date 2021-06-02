@@ -16,7 +16,7 @@ import { UsersModule } from './users/users.module';
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,
-      envFilePath: '.development.env',
+      envFilePath: '.env',
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
@@ -30,4 +30,3 @@ import { UsersModule } from './users/users.module';
   providers: [AppService, ChatGateway],
 })
 export class AppModule {}
-console.log(process.env.MONGO_URI);
