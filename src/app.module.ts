@@ -7,6 +7,10 @@ import { ChatGateway } from './chat.gateway';
 import { ItemsModule } from './items/items.module';
 import { PostsModule } from './posts/posts.module';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
+import { AuthController } from './auth/auth.controller';
+import { AuthService } from './auth/auth.service';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -25,8 +29,9 @@ import { UsersModule } from './users/users.module';
       }),
       inject: [ConfigService],
     }),
+    AuthModule,
   ],
-  controllers: [AppController],
-  providers: [AppService, ChatGateway],
+  controllers: [AppController, AuthController],
+  providers: [AppService, ChatGateway, AuthService],
 })
 export class AppModule {}
