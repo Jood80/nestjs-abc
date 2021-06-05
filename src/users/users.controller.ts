@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User as UserModel } from '@prisma/client';
 import { CreateUserDTO } from './dto/user.dto';
+import { ApiBody, ApiCreatedResponse, ApiResponse } from '@nestjs/swagger';
 
 @Controller()
 export class UsersController {
@@ -13,6 +14,11 @@ export class UsersController {
   }
 
   @Post('user')
+  @ApiResponse({
+    status: 201,
+  })
+  @ApiCreatedResponse({ description: 'User Registration' })
+  @ApiBody({ type: CreateUserDTO })
   async signupUser(@Body() userData: CreateUserDTO): Promise<UserModel> {
     return this.userService.createUser(userData);
   }

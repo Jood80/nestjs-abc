@@ -1,4 +1,5 @@
 import { Prisma } from '.prisma/client';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class UserParamsDto {
   skip: number;
@@ -10,6 +11,12 @@ export class UserParamsDto {
 }
 
 export class CreateUserDTO {
+  @ApiProperty()
   readonly name?: string;
+
+  @ApiProperty()
   readonly email: string;
+
+  @ApiProperty()
+  readonly password: string;
 }
