@@ -21,6 +21,11 @@ export class PostsController {
     return this.postsService.post({ id: Number(id) });
   }
 
+  @Get('posts')
+  async getAllPosts() {
+    return this.postsService.postsList();
+  }
+
   @Get('filtered-posts/:searchString')
   async getFilteredPosts(
     @Param('searchString') searchString: string,

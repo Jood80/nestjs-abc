@@ -5,9 +5,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -45,106 +42,80 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.PostsController = void 0;
+exports.PostsService = void 0;
 var common_1 = require("@nestjs/common");
-var post_dto_1 = require("./dto/post.dto");
-var swagger_1 = require("@nestjs/swagger");
-var PostsController = /** @class */ (function () {
-    function PostsController(postsService) {
-        this.postsService = postsService;
+var PostsService = /** @class */ (function () {
+    function PostsService(prisma) {
+        this.prisma = prisma;
     }
-    PostsController.prototype.getPostById = function (id) {
+    PostsService.prototype.post = function (postWhereUniqueInput) {
         return __awaiter(this, void 0, Promise, function () {
             return __generator(this, function (_a) {
-                return [2 /*return*/, this.postsService.post({ id: Number(id) })];
+                return [2 /*return*/, this.prisma.post.findUnique({
+                        where: postWhereUniqueInput
+                    })];
             });
         });
     };
-    PostsController.prototype.getAllPosts = function () {
+    PostsService.prototype.postsList = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2 /*return*/, this.postsService.postsList()];
-            });
-        });
-    };
-    PostsController.prototype.getFilteredPosts = function (searchString) {
-        return __awaiter(this, void 0, Promise, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, this.postsService.posts({
-                        where: {
-                            OR: [
-                                {
-                                    title: { contains: searchString }
-                                },
-                                {
-                                    content: { contains: searchString }
-                                },
-                            ]
+                return [2 /*return*/, this.prisma.post.findMany({
+                        select: {
+                            title: true
                         }
                     })];
             });
         });
     };
-    PostsController.prototype.createDraft = function (postData) {
+    PostsService.prototype.posts = function (params) {
         return __awaiter(this, void 0, Promise, function () {
-            var title, content, authorEmail;
+            var skip, take, cursor, where, orderBy;
             return __generator(this, function (_a) {
-                title = postData.title, content = postData.content, authorEmail = postData.authorEmail;
-                return [2 /*return*/, this.postsService.createPost({
-                        title: title,
-                        content: content,
-                        author: {
-                            connect: { email: authorEmail }
-                        }
+                skip = params.skip, take = params.take, cursor = params.cursor, where = params.where, orderBy = params.orderBy;
+                return [2 /*return*/, this.prisma.post.findMany({
+                        skip: skip,
+                        take: take,
+                        cursor: cursor,
+                        where: where,
+                        orderBy: orderBy
                     })];
             });
         });
     };
-    PostsController.prototype.publishPost = function (id) {
+    PostsService.prototype.createPost = function (data) {
         return __awaiter(this, void 0, Promise, function () {
             return __generator(this, function (_a) {
-                return [2 /*return*/, this.postsService.updatePost({
-                        where: { id: Number(id) },
-                        data: { published: true }
+                return [2 /*return*/, this.prisma.post.create({
+                        data: data
                     })];
             });
         });
     };
-    PostsController.prototype.deletePost = function (id) {
+    PostsService.prototype.updatePost = function (params) {
         return __awaiter(this, void 0, Promise, function () {
+            var data, where;
             return __generator(this, function (_a) {
-                return [2 /*return*/, this.postsService.deletePost({ id: Number(id) })];
+                data = params.data, where = params.where;
+                return [2 /*return*/, this.prisma.post.update({
+                        data: data,
+                        where: where
+                    })];
             });
         });
     };
-    __decorate([
-        common_1.Get('post/:id'),
-        __param(0, common_1.Param('id'))
-    ], PostsController.prototype, "getPostById");
-    __decorate([
-        common_1.Get('posts')
-    ], PostsController.prototype, "getAllPosts");
-    __decorate([
-        common_1.Get('filtered-posts/:searchString'),
-        __param(0, common_1.Param('searchString'))
-    ], PostsController.prototype, "getFilteredPosts");
-    __decorate([
-        common_1.Post('post'),
-        swagger_1.ApiCreatedResponse({ description: 'Post Drafting' }),
-        swagger_1.ApiBody({ type: post_dto_1.CreatePostDto }),
-        __param(0, common_1.Body())
-    ], PostsController.prototype, "createDraft");
-    __decorate([
-        common_1.Put('post/:id'),
-        __param(0, common_1.Param('id'))
-    ], PostsController.prototype, "publishPost");
-    __decorate([
-        common_1.Delete('post/:id'),
-        __param(0, common_1.Param('id'))
-    ], PostsController.prototype, "deletePost");
-    PostsController = __decorate([
-        common_1.Controller()
-    ], PostsController);
-    return PostsController;
+    PostsService.prototype.deletePost = function (where) {
+        return __awaiter(this, void 0, Promise, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.prisma.post["delete"]({
+                        where: where
+                    })];
+            });
+        });
+    };
+    PostsService = __decorate([
+        common_1.Injectable()
+    ], PostsService);
+    return PostsService;
 }());
-exports.PostsController = PostsController;
+exports.PostsService = PostsService;

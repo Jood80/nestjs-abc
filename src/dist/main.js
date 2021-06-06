@@ -50,6 +50,9 @@ function bootstrap() {
                 case 0: return [4 /*yield*/, core_1.NestFactory.create(app_module_1.AppModule)];
                 case 1:
                     app = _a.sent();
+                    app.enableCors({
+                        origin: process.env.ALLOWED_HOSTS
+                    });
                     app.setGlobalPrefix('api');
                     options = new swagger_1.DocumentBuilder()
                         .setTitle('NestJs ABC API')

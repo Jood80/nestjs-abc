@@ -15,6 +15,14 @@ export class PostsService {
     });
   }
 
+  async postsList() {
+    return this.prisma.post.findMany({
+      select: {
+        title: true,
+      },
+    });
+  }
+
   async posts(params: Partial<PostParamsDto>): Promise<Post[]> {
     const { skip, take, cursor, where, orderBy } = params;
     return this.prisma.post.findMany({
