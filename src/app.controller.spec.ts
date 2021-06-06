@@ -15,6 +15,10 @@ describe('AppController', () => {
   });
 
   describe('root', () => {
+    it('should create the app', () => {
+      expect(appController).toBeTruthy();
+    });
+
     it('should return "Hello World!"', () => {
       expect(appController.getHello()).toBe('Hello World!');
     });

@@ -137,8 +137,8 @@ var testing_1 = require('@nestjs/testing');
 var items_controller_1 = require('./items.controller');
 var items_service_1 = require('./items.service');
 describe('ItemsService', function () {
-  var service;
-  var controller;
+  var itemsService;
+  var itemsController;
   beforeEach(function () {
     return __awaiter(void 0, void 0, void 0, function () {
       var module;
@@ -153,7 +153,7 @@ describe('ItemsService', function () {
                   {
                     provide: items_service_1.ItemsService,
                     useValue: {
-                      findOne: jest.fn(),
+                      findAll: jest.fn(),
                     },
                   },
                 ],
@@ -161,14 +161,48 @@ describe('ItemsService', function () {
             ];
           case 1:
             module = _a.sent();
-            controller = module.get(items_controller_1.ItemsController);
-            service = module.get(items_service_1.ItemsService);
+            return [
+              4 /*yield*/,
+              module.resolve(items_controller_1.ItemsController),
+            ];
+          case 2:
+            itemsController = _a.sent();
+            return [4 /*yield*/, module.resolve(items_service_1.ItemsService)];
+          case 3:
+            itemsService = _a.sent();
             return [2 /*return*/];
         }
       });
     });
   });
+  describe('findAll', function () {
+    it('should return an array of useless items', function () {
+      return __awaiter(void 0, void 0, void 0, function () {
+        var result, _a;
+        return __generator(this, function (_b) {
+          switch (_b.label) {
+            case 0:
+              result = [{ name: 'hat', quantity: 2, desc: 'bla bal' }];
+              jest
+                .spyOn(itemsService, 'findAll')
+                .mockImplementation(function () {
+                  return __awaiter(void 0, void 0, void 0, function () {
+                    return __generator(this, function (_a) {
+                      return [2 /*return*/, result];
+                    });
+                  });
+                });
+              _a = expect;
+              return [4 /*yield*/, itemsController.findAll()];
+            case 1:
+              _a.apply(void 0, [_b.sent()]).toBe(result);
+              return [2 /*return*/];
+          }
+        });
+      });
+    });
+  });
   it('should be defined', function () {
-    expect(service).toBeDefined();
+    expect(itemsService).toBeDefined();
   });
 });
