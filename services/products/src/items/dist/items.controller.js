@@ -5,6 +5,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -42,50 +45,69 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.AppModule = void 0;
+exports.ItemsController = void 0;
 var common_1 = require("@nestjs/common");
-var config_1 = require("@nestjs/config");
-var mongoose_1 = require("@nestjs/mongoose");
-var app_controller_1 = require("./app.controller");
-var app_service_1 = require("./app.service");
-var chat_gateway_1 = require("./chat.gateway");
-var items_module_1 = require("./items/items.module");
-var posts_module_1 = require("./posts/posts.module");
-var users_module_1 = require("./users/users.module");
-var auth_module_1 = require("./auth/auth.module");
-var auth_controller_1 = require("./auth/auth.controller");
-var auth_service_1 = require("./auth/auth.service");
-var AppModule = /** @class */ (function () {
-    function AppModule() {
+var ItemsController = /** @class */ (function () {
+    function ItemsController(itemsService) {
+        this.itemsService = itemsService;
     }
-    AppModule = __decorate([
-        common_1.Module({
-            imports: [
-                posts_module_1.PostsModule,
-                users_module_1.UsersModule,
-                items_module_1.ItemsModule,
-                config_1.ConfigModule.forRoot({
-                    isGlobal: true,
-                    cache: true,
-                    envFilePath: '.env'
-                }),
-                mongoose_1.MongooseModule.forRootAsync({
-                    imports: [config_1.ConfigModule],
-                    useFactory: function (configService) { return __awaiter(void 0, void 0, void 0, function () {
-                        return __generator(this, function (_a) {
-                            return [2 /*return*/, ({
-                                    uri: configService.get('MONGODB_URI')
-                                })];
-                        });
-                    }); },
-                    inject: [config_1.ConfigService]
-                }),
-                auth_module_1.AuthModule,
-            ],
-            controllers: [app_controller_1.AppController, auth_controller_1.AuthController],
-            providers: [app_service_1.AppService, chat_gateway_1.ChatGateway, auth_service_1.AuthService]
-        })
-    ], AppModule);
-    return AppModule;
+    ItemsController.prototype.findAll = function () {
+        return __awaiter(this, void 0, Promise, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.itemsService.findAll()];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    ItemsController.prototype.findOne = function (id) {
+        return __awaiter(this, void 0, Promise, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.itemsService.findOne(id)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    ItemsController.prototype.create = function (createItemDto) {
+        return __awaiter(this, void 0, Promise, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.itemsService.create(createItemDto)];
+            });
+        });
+    };
+    ItemsController.prototype["delete"] = function (id) {
+        return this.itemsService["delete"](id);
+    };
+    ItemsController.prototype.update = function (updateItemDto, id) {
+        return this.itemsService.update(id, updateItemDto);
+    };
+    __decorate([
+        common_1.Get()
+    ], ItemsController.prototype, "findAll");
+    __decorate([
+        common_1.Get(':id'),
+        __param(0, common_1.Param('id'))
+    ], ItemsController.prototype, "findOne");
+    __decorate([
+        common_1.Post(),
+        common_1.HttpCode(204),
+        common_1.Header('Cache-Control', 'none'),
+        __param(0, common_1.Body())
+    ], ItemsController.prototype, "create");
+    __decorate([
+        common_1.Delete(':id'),
+        __param(0, common_1.Param('id'))
+    ], ItemsController.prototype, "delete");
+    __decorate([
+        common_1.Put(':id'),
+        __param(0, common_1.Body()), __param(1, common_1.Param('id'))
+    ], ItemsController.prototype, "update");
+    ItemsController = __decorate([
+        common_1.Controller('items')
+    ], ItemsController);
+    return ItemsController;
 }());
-exports.AppModule = AppModule;
+exports.ItemsController = ItemsController;
