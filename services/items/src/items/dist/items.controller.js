@@ -47,15 +47,22 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 exports.ItemsController = void 0;
 var common_1 = require("@nestjs/common");
+var microservices_1 = require("@nestjs/microservices");
 var ItemsController = /** @class */ (function () {
-    function ItemsController(itemsService) {
+    function ItemsController(itemsService, client) {
         this.itemsService = itemsService;
+        this.client = client;
     }
+    ItemsController.prototype.getNotifications = function (data, context) {
+        console.log("Pattern: " + context.getPattern());
+    };
     ItemsController.prototype.findAll = function () {
         return __awaiter(this, void 0, Promise, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.itemsService.findAll()];
+                    case 0:
+                        this.client.emit('hello', 'Hello from RabbitMQ!');
+                        return [4 /*yield*/, this.itemsService.findAll()];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });
@@ -85,6 +92,10 @@ var ItemsController = /** @class */ (function () {
         return this.itemsService.update(id, updateItemDto);
     };
     __decorate([
+        microservices_1.MessagePattern({ type: 'get-items' }),
+        __param(0, microservices_1.Payload()), __param(1, microservices_1.Ctx())
+    ], ItemsController.prototype, "getNotifications");
+    __decorate([
         common_1.Get()
     ], ItemsController.prototype, "findAll");
     __decorate([
@@ -106,7 +117,8 @@ var ItemsController = /** @class */ (function () {
         __param(0, common_1.Body()), __param(1, common_1.Param('id'))
     ], ItemsController.prototype, "update");
     ItemsController = __decorate([
-        common_1.Controller('items')
+        common_1.Controller('items'),
+        __param(1, common_1.Inject('ITEMS_SERVICE'))
     ], ItemsController);
     return ItemsController;
 }());
